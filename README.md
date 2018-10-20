@@ -1,2 +1,2 @@
 # laravel-docker
-basic docker image ready for laravel
+Basic docker image ready for laravel
