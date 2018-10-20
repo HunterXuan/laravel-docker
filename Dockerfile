@@ -62,6 +62,18 @@ RUN curl -s http://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 	
 WORKDIR /var/www/html
+
+RUN rm -rf ./* \
+	&& git clone https://github.com/laravel/laravel . \
+	&& rm -rf .git .gitignore .gitattributes tests \
+	&& composer install \
+	&& mv .env.example .env \
+	&& php artisan key:generate \
+	&& php artisan clear-compiled \
+	&& chgrp -R www-data storage /var/www/html/bootstrap/cache \
+	&& chmod -R ug+rwx storage /var/www/html/bootstrap/cache \
+	&& chgrp -R www-data storage /var/www/html/storage \
+	&& chmod -R ug+rwx storage /var/www/html/storage
 	
 COPY ./entrypoint.sh ./
 RUN chmod +x entrypoint.sh
